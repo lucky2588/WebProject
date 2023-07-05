@@ -1,0 +1,23 @@
+.icon-hover:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover:hover i {
+    color: #3b71ca !important;
+  }
+
+  .name-card{
+    margin-left: 5px;
+  }
+
+  .price-max{
+    margin-left: 60px;
+  }
+
+  
+  .price-range{
+    margin-left: 20px;
+  }
+
+  
