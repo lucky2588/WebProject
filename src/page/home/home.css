@@ -1,0 +1,18 @@
+.icon-hover:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover:hover i {
+    color: #3b71ca !important;
+  }
+
+.link-blog{
+  margin-left: 890px;
+  font-size: medium;
+}
+
+.img-title{
+  height: 200px;
+  width: 50px;
+}
