@@ -1,0 +1,15 @@
+.active-cont {
+    margin-left: 180px;
+  }
+  #menu-btn {
+    background-color: #100901;
+    color: #fff;
+    margin-left: -62px;
+  }
+/* 
+  .main-div{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-around;
+    width: 200px;
+  }  */
