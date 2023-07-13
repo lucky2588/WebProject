@@ -14,7 +14,7 @@ function CheckOut() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [transport, setTransport] = useState(true);
     const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
-    const { data, isLoading, isError } = useGetMyOrderQuery(auth.email);
+    const { data, isLoading, isError } = useGetMyOrderQuery(auth.id);
     const [address, setAddress] = useState(data?.user.address);
     const natigave = useNavigate();
     if (!isAuthenticated) {
@@ -38,7 +38,7 @@ function CheckOut() {
             orderId: data?.id,
             address: address,
             categoryPayment: 1,
-            text: text,
+            note: text,
             transport: transport ? parseInt(0) : parseInt(1),
             totalPrice: parseFloat(total),
             nameAccount: obj.name,
@@ -52,7 +52,7 @@ function CheckOut() {
             }
         };
         try {
-            const response = await axios.post(`http://localhost:8888/api/v1/user/CreatePayment`, objPush1,config);
+            const response = await axios.post(`http://localhost:8888/api/v1/order/CreatePayment`, objPush1,config);
             toast.success(" Khởi tạo đơn hàng thành công  ! ")
             natigave("/account/thanks")
         } catch (err) {
@@ -67,12 +67,13 @@ function CheckOut() {
             toast.error("Địa chỉ không được để trống !! ")
             return;
         }
+     
         const objPush = {
             userId: data?.user.id,
             orderId: data?.id,
             address: address,
             categoryPayment: 0,
-            text: text,
+            note: text,
             transport: transport ? parseInt(0) : parseInt(1),
             totalPrice: parseFloat(total)
         }
@@ -83,7 +84,7 @@ function CheckOut() {
             }
         };
         try {
-            const response = await axios.post(`http://localhost:8888/api/v1/user/CreatePayment`, objPush,config);
+            const response = await axios.post(`http://localhost:8888/api/v1/order/CreatePayment`, objPush,config);
             toast.success(" Khởi tạo đơn hàng thành công  ! ")
             natigave("/account/thanks")
         } catch (err) {
