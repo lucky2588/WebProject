@@ -10,10 +10,10 @@ import { Link } from 'react-router-dom';
 function Order() {
     const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
     const [getData, { data, isLoading, isError }] = useLazyGetMyOrderQuery();
-    const { data: productSimilar } = useGetProductSimilarQuery(auth.email);
+    const { data: productSimilar } = useGetProductSimilarQuery(auth.id);
     const navigate = useNavigate();
     useEffect(() => {
-        getData(auth.email);
+        getData(auth.id);
     }, [])
     if (!isAuthenticated) {
         return <Navigate to={"/login"} />;
@@ -30,7 +30,7 @@ function Order() {
             }
         };
         try {
-            const response = await axios.post(`http://localhost:8888/api/v1/user/addItemFavorites`, objPush, config);
+            const response = await axios.post(`http://localhost:8888/api/v1//addItemFavorites`, objPush, config);
             toast.success("Đã thêm Sản phẩm vào danh sách yêu thich ! ")
 
         } catch (err) {
@@ -51,9 +51,9 @@ function Order() {
             }
         };
         try {
-            const response1 = await axios.post(`http://localhost:8888/api/v1/user/addProductToOrder`, ObjAddCard, config);
+            const response1 = await axios.post(`http://localhost:8888/api/v1/order/addProductToOrder`, ObjAddCard, config);
             toast.success("Đã thêm Sản phẩm vào giỏ hàng  ! ")
-            getData(auth.email)
+            getData(auth.id)
         } catch (err) {
             toast.error("Số lượng sản phẩm tại Cửa hàng không đủ")
         }
@@ -70,7 +70,7 @@ function Order() {
             }
         };
         try {
-            const response1 = await axios.post(`http://localhost:8888/api/v1/user/removeProductFromOrder`, ObjRemoveCard, config);
+            const response1 = await axios.post(`http://localhost:8888/api/v1/order/removeProductFromOrder`, ObjRemoveCard, config);
             toast.success("Đã xóa sản phẩm này khỏi giỏ hàng của bạn !")
             window.location.reload();
         } catch (err) {
@@ -97,7 +97,7 @@ function Order() {
                 nums: data.numsInStore,
             }
             try {
-                const response1 = await axios.post(`http://localhost:8888/api/v1/user/changleProductFormOrder`, objPush,config);
+                const response1 = await axios.post(`http://localhost:8888/api/v1/order/changleProductFormOrder`, objPush,config);
                 toast.success("Các sản phẩm này đã không số lượng , chúng tôi sẽ đặt cho bạn về số lượng sẵn có tại cửa hàng !! ")
             } catch (err) {
                 alert(err)
@@ -109,8 +109,8 @@ function Order() {
             nums: data.nums - 1,
         }
         try {
-            const response2 = await axios.post(`http://localhost:8888/api/v1/user/changleProductFormOrder`, objPush,config);
-            getData(auth.email);
+            const response2 = await axios.post(`http://localhost:8888/api/v1/order/changleProductFormOrder`, objPush,config);
+            getData(auth.id);
         } catch (err) {
             alert(err)
         }
@@ -128,7 +128,7 @@ function Order() {
                 nums: data.numsInStore,
             }
             try {
-                const response1 = await axios.post(`http://localhost:8888/api/v1/user/changleProductFormOrder`, objPush);
+                const response1 = await axios.post(`http://localhost:8888/api/v1/order/changleProductFormOrder`, objPush);
                 toast.success("Các sản phẩm này đã không số lượng , chúng tôi sẽ đặt cho bạn về số lượng sẵn có tại cửa hàng !! ")
             } catch (err) {
                 alert(err)
@@ -146,8 +146,8 @@ function Order() {
             nums: data.nums + 1,
         }
         try {
-            const response2 = await axios.post(`http://localhost:8888/api/v1/user/changleProductFormOrder`, objPush,config);
-            getData(auth.email);
+            const response2 = await axios.post(`http://localhost:8888/api/v1/order/changleProductFormOrder`, objPush,config);
+            getData(auth.id);
         } catch (err) {
             alert(err)
         }
