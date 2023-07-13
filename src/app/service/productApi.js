@@ -13,7 +13,7 @@ export const productApi = createApi({
             query: (productId) => `getProduct/${productId}`
         }),
         getProductComment: builder.query({
-            query: (productId) => `getCommentProduct/${productId}`
+            query:  ({ page, pageSize , productId } = { page: 0, pageSize: 5 }) => `getCommentProduct/${productId}?page=${page}&pageSize=${pageSize}`
         }),
         getProductSimilar: builder.query({
             query: ({productId,brandId}) => `getProductSimilar/${productId}/${brandId}`
