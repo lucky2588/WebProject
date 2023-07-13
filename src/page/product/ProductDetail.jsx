@@ -1,7 +1,7 @@
 import React from 'react'
 import "./productDetail.css"
 import { useNavigate, useParams } from 'react-router'
-import { productApi, useGetProductByIdQuery, useGetProductCommentQuery, useGetProductSimilarQuery, useLazyGetProductCommentQuery } from '../../app/service/productApi';
+import { productApi, useGetProductByIdQuery, useGetProductSimilarQuery, useLazyGetProductCommentQuery } from '../../app/service/productApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef } from 'react';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { set } from 'react-hook-form';
+import ReactPaginate from 'react-paginate';
 function ProductDetail() {
     const dispatch = useDispatch();
     const [temple, setTemple] = useState("");
@@ -28,8 +29,16 @@ function ProductDetail() {
     const nativage = useNavigate();
     const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
     const [text, setText] = useState("");
+    const [showList, setShowList] = useState(false);
     useEffect(() => {
-        getComments(productID);
+        getComments(
+
+            {
+                page: 0,
+                pageSize: 6,
+                productId: productID
+            }
+        );
     }, [ProductData, text])
 
     const hanldenBtnAddFavorites = async (productId) => {
@@ -39,12 +48,12 @@ function ProductDetail() {
         }
         const config = {
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
-          };
+        };
         try {
-            const response = await axios.post(`http://localhost:8888/api/v1/user/addItemFavorites`, objPush,config);
+            const response = await axios.post(`http://localhost:8888/api/v1/user/addItemFavorites`, objPush, config);
             toast.success("Đã thêm Sản phẩm vào danh sách yêu thich ! ")
 
         } catch (err) {
@@ -88,11 +97,6 @@ function ProductDetail() {
         }
         setNums(nums - 1)
     }
-
-
-    if (isLoading || isLoadingProductSimilar) {
-        return <h2>Is Loading ....</h2>
-    }
     const handlenBtnPush = () => {
         console.log(ProductData?.nums)
         if (nums > ProductData?.nums - 1) {
@@ -115,24 +119,57 @@ function ProductDetail() {
             }
         };
         try {
-            const response1 = await axios.post(`http://localhost:8888/api/v1/user/addProductToOrder`, ObjAddCard, config);
+            const response1 = await axios.post(`http://localhost:8888/api/v1/order/addProductToOrder`, ObjAddCard, config);
             toast.success("Đã thêm Sản phẩm vào giỏ hàng !")
         } catch (err) {
             toast.error("Số lượng sản phẩm tại Cửa hàng không đủ")
         }
     }
+    const handlePageClick = (page) => {
+        getComments(
+            {
+                page: page.selected,
+                pageSize: 6,
+                productId: productID
+            }
+        );
+    }
+    const handleClick = () => {
+        setShowList(!showList);
+    };
+    const handlenBtnDelete = async (id) => {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        try {
+            const response1 = await axios.delete(`http://localhost:8888/api/v1/order/addProductToOrder`, config);
+            toast.success("Xóa bình luận thành công  !")
+        } catch (err) {
+            alert(err)
+        }
+          
+    }
+
+    if (isLoading || isLoadingProductSimilar) {
+        return <h2>Is Loading ....</h2>
+    }
+
+
     return (
         <>
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
             <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" rel="stylesheet" />
             <div>
-          
+
                 <section className="py-5">
                     <div className="container">
                         <div className="row gx-5">
                             <aside className="col-lg-6">
-                               
+
 
                                 <div className="d-flex justify-content-center mb-3">
                                     <Carousel>
@@ -164,7 +201,7 @@ function ProductDetail() {
                                                     <h6><span className="badge bg-success pt-1 mt-3 ms-2">New Arrival</span></h6>
                                                 )
                                             }
-                                          
+
                                         </div></>
                                 )}
                                 <div className="ps-lg-3">
@@ -239,7 +276,7 @@ function ProductDetail() {
                                             </div>
                                         </div>
                                     </div>
-                                  
+
                                     <button className="btn btn-primary shadow-0" onClick={() => handlenBtnAddCart(ProductData?.id)}> <i className="me-1 fa fa-shopping-basket" /> Thêm vào giỏ hàng</button>
                                     <button onClick={() => hanldenBtnAddFavorites(ProductData?.id)} className="btn btn-light border border-secondary py-2 icon-hover px-3" > <i className="me-1 fa fa-heart fa-lg" /> Yêu Thích </button>
                                 </div>
@@ -247,13 +284,13 @@ function ProductDetail() {
                         </div>
                     </div>
                 </section>
-           
+
                 <section className="bg-light border-top py-4">
                     <div className="container">
                         <div className="row gx-4">
                             <div className="col-lg-8 mb-4">
                                 <div className="border rounded-2 px-3 py-2 bg-white">
-                                    
+
                                     <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
                                         <li className="nav-item d-flex" role="presentation">
                                             <button className="nav-link d-flex align-items-center justify-content-center w-100 active" id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab" aria-controls="ex1-pills-1" aria-selected={status} onClick={() => setStatus(true)}>Giới thiệu Sản Phẩm</button>
@@ -262,7 +299,7 @@ function ProductDetail() {
                                             <button className="nav-link d-flex align-items-center justify-content-center w-100" id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab" aria-controls="ex1-pills-2" aria-selected={status} onClick={() => setStatus(false)}>Mô tả chi tiết</button>
                                         </li>
                                     </ul>
-    
+
                                     <div className="tab-content" id="ex1-content">
                                         {status ? (
                                             <div className="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
@@ -279,7 +316,7 @@ function ProductDetail() {
                                         )
                                         }
                                     </div>
-                                 
+
                                 </div>
                             </div>
 
@@ -295,7 +332,7 @@ function ProductDetail() {
                                                             <img src={e?.thumbail} style={{ minWidth: '66px', height: '86px' }} className="img-md img-thumbnail" />
                                                             <strong className="text-dark"> {e?.name}</strong>
                                                             <br></br>
-                                                      </Link>
+                                                        </Link>
                                                     </div>
                                                 )
                                                 )
@@ -313,12 +350,21 @@ function ProductDetail() {
                             <div className="col-md-12 col-lg-12 col-xl-8">
                                 <div className="card">
                                     {
-                                        commentData?.map((comment) => (
+                                        commentData?.content.map((comment) => (
                                             <div className="card-body col-12">
                                                 <div className="d-flex flex-start align-items-center col-12">
                                                     <img className="rounded-circle shadow-1-strong me-3" src={comment?.user.avatar} alt="avatar" width={60} height={60} />
                                                     <div>
+                                                        {
+                                                            comment?.user.id == auth?.id && (
+                                                                <div className=" btnOption">
+                                                                    <button className="icon btn btn-danger" onClick={() => handlenBtnDelete()} href="#" data-bs-toggle="dropdown"><i className="bi bi-three-dots" />Remove</button>
+                                                                </div>
+                                                            )
+                                                        }
+
                                                         <h6 className="fw-bold text-primary mb-1">{comment?.user.name}</h6>
+
                                                         <p className="text-muted small mb-0">
                                                             {new Date(...comment?.createAt).toLocaleDateString()}
                                                         </p>
@@ -326,11 +372,40 @@ function ProductDetail() {
                                                 </div>
                                                 <p className="mt-3 mb-4 pb-2">
                                                     {comment?.content}
+
                                                 </p>
+                                                <hr class="hr-light" />
+
                                             </div>
+
                                         )
                                         )
                                     }
+                                    <nav className="my-4" aria-label="...">
+                                        <ul className="pagination pagination-circle justify-content-center">
+
+                                            <ReactPaginate
+                                                nextLabel="Trang tiếp theo >"
+                                                onPageChange={handlePageClick}
+                                                pageRangeDisplayed={2}
+                                                marginPagesDisplayed={2}
+                                                pageCount={commentData?.totalPages}
+                                                previousLabel="< Trang trước"
+                                                pageClassName="page-item"
+                                                pageLinkClassName="page-link"
+                                                previousClassName="page-item"
+                                                previousLinkClassName="page-link"
+                                                nextClassName="page-item"
+                                                nextLinkClassName="page-link"
+                                                breakLabel="..."
+                                                breakClassName="page-item"
+                                                breakLinkClassName="page-link"
+                                                containerClassName="pagination"
+                                                activeClassName="active"
+                                                renderOnZeroPageCount={null}
+                                            />
+                                        </ul>
+                                    </nav>
                                     <div className="card-footer py-3 border-0" style={{ backgroundColor: '' }}>
                                         <div className="d-flex flex-start w-100">
 
