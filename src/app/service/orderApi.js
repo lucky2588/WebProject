@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
-const baseUrl = "http://localhost:8888/api/v1/user"
+const baseUrl = "http://localhost:8888/api/v1/order"
 export const orderApi = createApi({
     reducerPath: "orderApi",
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl,
@@ -16,24 +16,22 @@ export const orderApi = createApi({
     }),
     endpoints: (builder) => ({
         getMyOrder: builder.query({
-            query: (email) => `myOrder/${email}`
+            query: (id) => `myOrder/${id}`
         }),
         getProductSimilar: builder.query({
-            query: (email) => `ProductSimilarInOrder/${email}`
+            query: (id) => `ProductSimilarInOrder/${id}`
         }),
         getPayment: builder.query({
-            query: (paymentId) => `getPayment/${paymentId}`
+            query: (id) => `getPayment/${id}`
         }),
         getBillbyId: builder.query({
             query: (orderId) => `getOrder/${orderId}`
         }),
         getMyBill: builder.query({
-            query: (email) => `getMyBill/${email}`
+            query: (id) => `getMyBill/${id}`
         }),
-        
-     
     }),
 
 });
 
-export const {useGetMyOrderQuery,useLazyGetMyOrderQuery,useGetProductSimilarQuery,useGetBillbyIdQuery,useGetMyBillQuery,useGetPaymentQuery} = orderApi;
+export const {useGetMyOrderQuery,useLazyGetMyOrderQuery,useGetProductSimilarQuery,useGetBillbyIdQuery,useLazyGetMyBillQuery,useGetMyBillQuery,useGetPaymentQuery} = orderApi;
