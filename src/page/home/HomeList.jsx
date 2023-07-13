@@ -75,7 +75,7 @@ function HomeList() {
       }
     };
     try {
-      const response1 = await axios.post(`http://localhost:8888/api/v1/user/addProductToOrder`, ObjAddCard,config);
+      const response1 = await axios.post(`http://localhost:8888/api/v1/order/addProductToOrder`, ObjAddCard,config);
       toast.success("Đã thêm Sản phẩm vào giỏ hàng  ! ")
     } catch (err) {
       toast.error("Số lượng sản phẩm tại Cửa hàng không đủ")
