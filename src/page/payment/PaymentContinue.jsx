@@ -15,7 +15,7 @@ function PaymentContinue() {
            <br></br>
        <br></br>
        <br></br>
-        <section className="vh-90" style={{backgroundColor: '#f5f7fa'}}>
+        <section className="vh-90 vw-80" style={{backgroundColor: ''}}>
        <br></br>
        <br></br>
        <br></br>
@@ -29,7 +29,7 @@ function PaymentContinue() {
                     </div>
                     <p className="mb-0 mt-2 font-italic">
                      Cảm ơn  
-                      <a href="#" className="text-info"> {auth?.name}</a> 
+                      <a href="#" className="text-info"> {auth?.name} </a> 
                       đã ủng hộ  . Hãy chờ chúng tôi phản hồi về đơn hàng của bạn nhé  ^^
 
                     </p>
