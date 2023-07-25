@@ -18,6 +18,9 @@ export const orderApi = createApi({
         getMyOrder: builder.query({
             query: (id) => `myOrder/${id}`
         }),
+        getPayments: builder.query({
+            query: ({ userId,page, pageSize } = { page: 0, pageSize: 5 }) => `getPayments/${userId}?page=${page}&pageSize=${pageSize}`
+        }),
         getProductSimilar: builder.query({
             query: (id) => `ProductSimilarInOrder/${id}`
         }),
@@ -34,4 +37,4 @@ export const orderApi = createApi({
 
 });
 
-export const {useGetMyOrderQuery,useLazyGetMyOrderQuery,useGetProductSimilarQuery,useGetBillbyIdQuery,useLazyGetMyBillQuery,useGetMyBillQuery,useGetPaymentQuery} = orderApi;
+export const {useGetMyOrderQuery,useLazyGetMyOrderQuery,useLazyGetPaymentsQuery,useGetProductSimilarQuery,useGetBillbyIdQuery,useLazyGetMyBillQuery,useGetMyBillQuery,useGetPaymentQuery} = orderApi;
