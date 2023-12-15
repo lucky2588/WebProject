@@ -52,7 +52,6 @@ function HomeList() {
     try {
       const response = await axios.post(`http://localhost:8888/api/v1/user/addItemFavorites`, objPush,config);
       toast.success("Đã thêm Sản phẩm vào danh sách yêu thich ! ")
-
     } catch (err) {
       toast.error("Sản phẩm này đã trong danh sách yêu thích của bạn")
     }

@@ -8,10 +8,11 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function Search() {
-  const { auth, isAuthenticated } = useSelector((state) => state.auth)
+  const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
   const { keyword } = useParams();
   const [getData, { data, isLoading }] = useLazySearchProductQuery()
   const natigave = useNavigate();
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   useEffect(
     () => {
       getData(

@@ -9,16 +9,12 @@ import "../node_modules/bootstrap/dist/css/bootstrap.css"
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle"
 import './App.css'
 import Login from './page/login/Login'
-import Header from './components/header/Header'
-import Footer from './components/footer/Footer'
 import HomePage from './page/home/HomePage'
 import NotFound from './page/notFound/NotFound'
 import ListBlog from './page/blog/ListBlog'
 import Blog from './page/blog/Blog'
 import BarCode from './page/barcode/BarCode'
 import Account from './page/account/Account'
-import ProductsBuy from './page/order/ProductsBuy'
-
 import CheckOut from './page/payment/CheckOut'
 import ForgetPassword from './page/login/ForgetPassword'
 import Order from './page/order/Order'
@@ -42,6 +38,7 @@ import PaymentContinue from './page/payment/PaymentContinue'
 import MyOrder from './page/order/MyOrder'
 import PaymentDetail from './page/order/PaymentDetail'
 import Loading from './page/loading/Loading';
+import ListPayment from './page/order/ListPayment';
 
 
 
@@ -83,7 +80,7 @@ function App() {
           <Route path='introduce' element={<Introduce />} />
 
 
-          <Route path='code' element={<BarCode />} />
+          <Route path='showProduct/:content' element={<HomeList />} />
         
 
           <Route path='account'>
@@ -94,6 +91,7 @@ function App() {
             <Route path='changlePassword' element={<ChanglePassWord/>}/>
             <Route path='checkout' element={<CheckOut />} />
             <Route path='MyBill' element={<MyOrder />} />
+            <Route path='payments' element={<ListPayment />} />
             <Route path='getBill/:paymentId' element={<PaymentDetail />} />
             <Route path='*' element={<NotFound />} />
           </Route >

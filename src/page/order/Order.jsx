@@ -294,7 +294,7 @@ function Order() {
                                                                             minimumFractionDigits: 0,
                                                                             maximumFractionDigits: 0,
                                                                             minimumIntegerDigits: 3,
-                                                                        })
+                                                                        })  
 
                                                                     }đ</p>
                                                                 </div>
@@ -302,7 +302,7 @@ function Order() {
                                                             <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
                                                                 <div className="float-md-end">
                                                                     <button href="#!" class="btn btn-light border px-2 icon-hover-primary" onClick={() => hanldenBtnAddFavorites(e?.product.id)}><i class="fas fa-heart fa-lg px-1 text-secondary"></i></button>
-                                                                    <button href="#" className="btn btn-light border text-danger icon-hover-danger" onClick={() => removeProductFormCard(e?.product.id)} > Xóa  </button>
+                                                                    <button href="#" className="btn btn-light border text-danger icon-hover-danger" onClick={()=>removeProductFormCard(e?.product.id)} > Xóa  </button>
                                                                 </div>
                                                             </div>
                                                         </div>

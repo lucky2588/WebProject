@@ -8,16 +8,16 @@ import { useSelector } from 'react-redux';
 function PaymentDetail() {
     const { paymentId } = useParams();
     const { auth, isAuthenticated } = useSelector((state) => state.auth)
-    const { data , isLoading } = useGetPaymentQuery(paymentId);
+    const { data, isLoading } = useGetPaymentQuery(paymentId);
 
     const { data: dataProduct } = useGetBillbyIdQuery(data?.orderBill.id)
-    if(isLoading){
+    if (isLoading) {
         return <h3>Is Loading ..</h3>
     }
 
-    console.log(dataProduct)  
-      const xShip = data?.transport == 0 ? 35000 : 50000
-    const tax = (data?.price - xShip) * (10/100)
+    console.log(dataProduct)
+    const xShip = data?.transport == 0 ? 35000 : 50000
+    const tax = (data?.price - xShip) * (10 / 100)
 
 
     return (
@@ -107,31 +107,31 @@ function PaymentDetail() {
                                         }
                                     </div>
                                     <div className="d-flex justify-content-between pt-2">
-                                        <p className="fw-bold mb-0">Thông tin thêm</p>
+                                        <p className="fw-bold mb-2">Thông tin thêm</p>
                                     </div>
                                     <div className="d-flex justify-content-between pt-2">
-                                        <p className="text mb-0">Phương thức thanh toán : {
+                                        <p className="text mb-2">Phương thức thanh toán : {
                                             data?.type == 0 ? "Nhận hàng trả tiền " : "Chuyển khoản"
                                         }</p>
-                                        <p className="text mb-0"><span className="fw-bold me-4">Thuế</span> 
-                                          {
+                                        <p className="text mb-0"><span className="fw-bold me-4">Thuế</span>
+                                            {
                                                 parseFloat(tax).toLocaleString('en-US', {
                                                     minimumFractionDigits: 0,
                                                     maximumFractionDigits: 0,
                                                     minimumIntegerDigits: 3,
                                                 })
                                             }đ
-                                        
-                                        
+
+
                                         </p>
                                     </div>
 
                                     <div className="d-flex justify-content-between">
-                                        <p className="text mb-0">Ngày khởi tạo  : { new Date(...data?.createAt).toLocaleDateString() }</p>
-                                     
+                                        <p className="text mb-2">Ngày khởi tạo  : {new Date(...data?.createAt).toLocaleDateString()}</p>
 
-                                        <p className="text mb-0"><span className="fw-bold me-4">Phí Vận Chuyển</span> 
-                                             {
+
+                                        <p className="text mb-2"><span className="fw-bold me-4">Phí Vận Chuyển</span>
+                                            {
                                                 parseFloat(xShip).toLocaleString('en-US', {
                                                     minimumFractionDigits: 0,
                                                     maximumFractionDigits: 0,
@@ -142,26 +142,49 @@ function PaymentDetail() {
 
                                     </div>
                                     <div className="d-flex justify-content-between mb-5">
-                                        <p className="text mb-0 ">Trạng thái đơn hàng : {
-                                            data?.paymentStatus == "INITIAL" ? ("Khởi tạo") : ("Xác Minh Đơn Hàng")
-                                        } </p>
-                                        <p className="text mb-0"><span className="fw-bold me-4">Hình thức vận chuyển </span> 
-                                        {
-                                            data?.transport == 0 ? ("Thường") : ("Nhanh")
-                                        }</p>
+                                        <p className="text mb-2 ">Trạng thái đơn hàng :
+                                            {
+                                                data?.paymentStatus == "INITIAL" && "Khởi tạo"
+                                            }
+                                            {
+                                                data?.paymentStatus == "SUCCESS" && "Giao hàng thành công"
+                                            }
+                                            {
+                                                data?.paymentStatus == "Not_Receive" && "Hoàn trả hàng"
+                                            }
+                                            {
+                                                data?.paymentStatus == "CANCLE" && "Đơn hàng bị hủy"
+                                            }
+                                            {
+                                                data?.paymentStatus == "PROCEED" && "Đang giao"
+                                            }
+                                        </p>
+                                        <p className="text mb-2"><span className="fw-bold me-4">Hình thức vận chuyển </span>
+                                            {
+                                                data?.transport == 0 ? ("Thường") : ("Nhanh")
+                                            }</p>
                                     </div>
+                                    {
+                                        data?.reasonCancle != null && (
+                                            <div className="d-flex justify-content-between mb-5">
+                                                <p className="text mb-2 ">Lý do hủy đơn :
+                                                </p>
+                                            </div>
+                                        )
+                                    }
+
                                 </div>
-                                <div className="card-footer border-0 px-4 py-5" style={{ backgroundColor: '#a8729a', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
+                                <div className="card-footer border-0 " style={{ backgroundColor: '#a8729a', }}>
                                     <h5 className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0"> Tổng Tiền
                                         : <span className="h5 mb-0 ms-2">
-                                        {
+                                            {
                                                 parseFloat(data?.price).toLocaleString('en-US', {
                                                     minimumFractionDigits: 0,
                                                     maximumFractionDigits: 0,
                                                     minimumIntegerDigits: 3,
                                                 })
                                             } đ
-                                            </span></h5>
+                                        </span></h5>
                                 </div>
                             </div>
                         </div>

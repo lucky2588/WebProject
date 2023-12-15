@@ -113,9 +113,8 @@ function Account() {
                                         <div className="card mb-4">
                                             <div className="card-body text-center">
                                                 <img src={dataUser?.avatar || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"} alt="avatar" className="rounded-circle img-fluid" style={{ width: '150px' }} />
-                                                <h5 className="my-3">John Smith</h5>
-                                                <p className="text-muted mb-1">Full Stack Developer</p>
-                                                <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                                <h5 className="my-3">{auth?.name}</h5>
+                                                
                                                 <div className="d-flex justify-content-center mb-2">
                                                     <button type="button" className="btn btn-primary">Cập nhật Ảnh </button>
                                                     <MDBFile onChange={(e) => handlenAvtar(e)} placeholder='Cập nhật ảnh' />
@@ -249,15 +248,15 @@ function Account() {
                                                 <br>
                                                 </br>
                                                 <div>
-                                                    <p className="mb-2 h5">8471</p>
+                                                    <p className="mb-2 h5">8</p>
                                                     <p className="text-muted mb-0">Wallets Balance</p>
                                                 </div>
                                                 <div className="px-3">
-                                                    <p className="mb-2 h5">8512</p>
+                                                    <p className="mb-2 h5">12</p>
                                                     <p className="text-muted mb-0">Income amounts</p>
                                                 </div>
                                                 <div>
-                                                    <p className="mb-2 h5">4751</p>
+                                                    <p className="mb-2 h5">20</p>
                                                     <p className="text-muted mb-0">Total Transactions</p>
                                                 </div>
                                             </div>

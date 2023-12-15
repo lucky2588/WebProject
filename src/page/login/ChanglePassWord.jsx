@@ -9,9 +9,11 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function ChanglePassWord() {
-    const { auth, isAuthenticated } = useSelector((state) => state.auth)
+    const { auth, isAuthenticated , token } = useSelector((state) => state.auth)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const natigave = useNavigate();
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
 
 
 

@@ -6,15 +6,19 @@ import useConfirm from '../../hooks/confirmEmail';
 import { useConfirmUserQuery } from '../../app/service/authApi';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function ConfirmAccount() {
+    const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const natigave = useNavigate();
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
 
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.get(`http://localhost:8888/auth/confirmToken/${data.data}`);
+            const response = await axios.post(`http://localhost:8888/auth/confirmToken/${data.data}`);
             toast.success("Xác thực thành công , hãy đăng nhập vào trang của chúng tôi !! ")
             natigave("/login")
         } catch (error) {

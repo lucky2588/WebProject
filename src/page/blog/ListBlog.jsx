@@ -15,9 +15,7 @@ function ListBlog() {
         );
      },[])
 
-     if(isLoading){
-      return  <h2>... Is Loading</h2>
-     }
+    
     const handlePageClick = (page) => {
         getBlogs(
             {
@@ -26,6 +24,9 @@ function ListBlog() {
             }
         );
     }
+    if(isLoading){
+        return  <h2>... Is Loading</h2>
+       }
     return (
         <>
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -44,33 +45,13 @@ function ListBlog() {
                     <div className="container">
                         {/*Section: Content*/}
                         <section className="text-center">
-                            <h4 className="mb-5"><strong>Tin tức về Công Nghệ </strong></h4>
+                            <h4 className="mb-5"><strong>Tin tức về các sản phẩm bên TOTO </strong></h4>
                             <div className="row">
-
-                                {/* <div className="col-lg-4 col-md-12 mb-4">
-                                    <div className="card">
-                                        <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                            <img src="https://row.hyperx.com/cdn/shop/products/hyperx_cloud_alpha_blackred_4_detachable_2048x2048.jpg?v=1662420668" className="img-fluid" />
-                                            <a href="#!">
-                                                <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }} />
-                                            </a>
-                                        </div>
-                                        <div className="card-body">
-                                            <h5 className="card-title">Post title</h5>
-                                            <p className="card-text">
-                                                Some quick example text to build on the card title and make up the bulk of the
-                                                card's content.
-                                            </p>
-                                            <a href="#!" className="btn btn-primary">Read</a>
-                                        </div>
-                                    </div>
-                                </div> */}
                                 {
                                     blogPage?.content.map((blog,index)=>(
                                         <div className="col-lg-4 col-md-12 mb-4">
                                         <div className="card">
-                                            <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                                                
+                                            <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">                                          
                                                 <Link to={`/blog/${blog?.id}`}>
                                                 <img src={blog.thumbail} className="img-fluid" />
                                                     <div className="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }} />

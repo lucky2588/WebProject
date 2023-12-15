@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router';
 import { useGetMyBillQuery, useLazyGetMyBillQuery } from '../../app/service/orderApi';
 import { Link } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal, Button, Form, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -12,9 +12,17 @@ function MyOrder() {
     const { auth, isAuthenticated, token } = useSelector((state) => state.auth)
     const [getData, { data, isLoading, isError }] = useLazyGetMyBillQuery();
     const [showModal, setShowModal] = useState(false);
-    const [paymentId, setPaymentId] = useState();
-    const natigave = useNavigate();
 
+    const [showReason, setReason] = useState(false);
+    const [paymentId, setPaymentId] = useState();
+    const [selectedOption, setSelectedOption] = useState(1);
+    const [showForm, setShowForm] = useState(false);
+    const [note, setNote] = useState('');
+    const natigave = useNavigate();
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    if (!isAuthenticated) {
+        return <Navigate to={"/login"} />;
+    }
     useEffect(() => {
         getData(auth.id)
     }, [])
@@ -28,19 +36,55 @@ function MyOrder() {
         setShowModal(false);
     };
     const handlenBtnDelete = async () => {
-        const config = {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        }
         try {
-            const response = await axios.delete(`http://localhost:8888/api/v1/order/deleteOrder/${paymentId}`, config);
-            deleteItems();
+            const response = await axios.delete(`http://localhost:8888/api/v1/order/deleteOrder/${paymentId}`);
+            toast.success("Hủy đơn hàng thành công !! ! ")
+            setShowModal(false);
+            getData(auth.id)
         } catch (err) {
             alert(err);
         }
     };
+
+
+    const handleShowRefund = (id) => {
+        setReason(true);
+        setPaymentId(id)
+    };
+
+    const handleCloseReason = () => {
+        setReason(false);
+    };
+
+    const handleOptionChange = (e) => {
+        const selectedValue = parseInt(e.target.value);
+        setSelectedOption(selectedValue);
+
+        if (selectedValue === 3) {
+            setShowForm(true);
+        } else {
+            setShowForm(false);
+        }
+    };
+
+    const handleNoteChange = (e) => {
+        setNote(e.target.value);
+    };
+
+
+
+
+
+
+    const handlenBtnReceive = async (id) => {
+        try {
+            const response = await axios.post(`http://localhost:8888/api/v1/order/receiveOrder/${id}`);
+            toast.success("Cảm ơn bạn đã mua hàng của chúng tôi  !! ! ")
+            window.location.reload();
+        } catch (err) {
+            alert(err);
+        }
+    }
 
     const deleteItems = async () => {
         const config = {
@@ -53,12 +97,32 @@ function MyOrder() {
             const response = await axios.delete(`http://localhost:8888/api/v1/order/deleteAllOfOrderItem`, config);
             toast.success("Hủy đơn hàng thành công  !! ")
             setShowModal(false);
-            getData(auth.id)
+            window.location.reload();
         } catch (err) {
             alert(err);
         }
     };
 
+    const handlenBtnNotRecceive = async ()=> {
+        let text;
+        if (selectedOption === 1) {
+            text = "I don't like the product"
+        }
+        if (selectedOption === 2) {
+            text = "I haven't received the goods for a long time"
+        }
+        const objPush = {
+            note: selectedOption === 3 ? note : text,
+        }
+        try {
+            const response = await axios.post(`http://localhost:8888/api/v1/order/notReceiveOrder/${paymentId}`,objPush);
+            toast.success("Hoàn đơn hàng  thành công  !! ")
+            setReason(false);
+            window.location.reload();
+        } catch (err) {
+            alert(err);
+        }
+    }
 
     if (isLoading) {
         return <h2>Is Loading ...</h2>
@@ -160,32 +224,59 @@ function MyOrder() {
                                                         {
                                                             e?.paymentStatus == "PROCEED" && (
                                                                 <>
-                                                                    <button className="btn btn-success btn-sm" type="button">Đã nhận được hàng</button>
-                                                                    <button className="btn btn-warning btn-sm" type="button">Chưa nhận được hàng</button>
+                                                                    <button className="btn btn-success btn-sm mx-3 mb-3" onClick={() => handlenBtnReceive(e?.id)} type="button">Đã nhận được hàng</button>
+                                                                    <button className="btn btn-warning btn-sm mx-3" onClick={() => handleShowRefund(e?.id)} type="button">Tôi muốn hoàn hàng / không nhận hàng</button>
                                                                 </>
                                                             )
                                                         }
 
 
                                                         <br />
-                                                        <Link to={`/account/getBill/${e?.id}`} className="btn btn-primary btn-sm " type="button" style={{ backgroundColor: 'red' }}>Xem chi tiết đơn hàng</Link>
+                                                        <Link to={`/account/getBill/${e?.id}`} className="btn btn-primary btn-sm mx-3 " type="button" style={{ backgroundColor: 'red' }}>Xem chi tiết đơn hàng</Link>
                                                         {
                                                             e?.paymentStatus == "INITIAL" && (
                                                                 <>
-                                                                    <button onClick={()=> handleShowModal(e?.id)} className="btn btn-danger btn-sm mt-2" type="button">
+                                                                    <button onClick={() => handleShowModal(e?.id)} className="btn btn-danger btn-sm mt-2" type="button">
                                                                         Hủy đơn hàng
                                                                     </button>
                                                                 </>
                                                             )
                                                         }
+                                                        <Modal show={showReason} onHide={handleCloseReason}>
+                                                            <Modal.Header closeButton>
+                                                                <Modal.Title>Tại sao bạn muốn hủy / không nhận đơn hàng này</Modal.Title>
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                                <Form>
+                                                                    <Form.Group controlId="formReason">
+                                                                        <Form.Label>Lý do </Form.Label>
+                                                                        <Form.Control as="select" onChange={handleOptionChange} value={selectedOption}>
+                                                                            <option value={1}>Tôi không ưng sản phẩm </option>
+                                                                            <option value={2}>Tôi chưa nhận được đơn hàng</option>
+                                                                            <option value={3}>Lý do khác</option>
+                                                                        </Form.Control>
+                                                                    </Form.Group>
+                                                                    {showForm && (
+                                                                        <Form.Group controlId="formNote">
+                                                                            <Form.Label>Note : </Form.Label>
+                                                                            <Form.Control type="text" value={note} onChange={handleNoteChange} />
+                                                                        </Form.Group>
+                                                                    )}
+                                                                </Form>
+                                                            </Modal.Body>
+                                                            <Modal.Footer>
+                                                                <Button variant="secondary" onClick={handleCloseReason}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button variant="primary" onClick={handlenBtnNotRecceive}>
+                                                                    Xác nhận
+                                                                </Button>
+                                                            </Modal.Footer>
+                                                        </Modal>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +286,7 @@ function MyOrder() {
                     }
 
                     {
-                        isError && (
+                        !data?.length  && (
 
                             <div className="row">
                                 <div className="col-md-12">

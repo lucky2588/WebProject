@@ -4,19 +4,26 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBDropdown, MDBDropdownMenu, MDBDropdownToggle, MDBDropdownItem } from 'mdb-react-ui-kit';
 import { toast } from 'react-toastify';
-import { Button } from 'bootstrap/dist/js/bootstrap.bundle';
 import { logout } from '../../app/slice/authSlice';
+import { Button, Modal } from 'react-bootstrap';
 
 function Header() {
     const { auth, isAuthenticated } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
     const [text , setText] = useState("")
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
     
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     const handlenBtnSubmit = ()=> {
        if(text === ""){
-        toast.error("hãy viết tên sản phẩm bạn muốn tìm kiếm vào đây")
+        navigate('list/bestSeller')
         return;
        }
       navigate(`search/${text}`)
@@ -24,7 +31,9 @@ function Header() {
 
     const handlenBtnLogout = ()=> {
         dispatch(logout());
+        setShowModal(false);
         navigate("/login")
+        
     }
 
 
@@ -42,7 +51,7 @@ function Header() {
                             {/* Left elements */}
                             <div className="col-lg-2 col-sm-4 col-4">
                                 <Link to={"/"} target="_blank" className="float-start">
-                                    <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height={35} />
+                                    <img src="https://kbis.com/wp-content/uploads/2021/03/TOTO-logo.jpg" height={55} />
                                 </Link>
                             </div>
                             {/* Left elements */}
@@ -56,8 +65,8 @@ function Header() {
                                             <MDBDropdownMenu>
                                                 <MDBDropdownItem link ><Link to={"/account"}> Thông tin cá nhân</Link> </MDBDropdownItem>
                                                 <MDBDropdownItem link ><Link to={'/account/MyBill'}>Đơn Hàng của tôi</Link> </MDBDropdownItem>
-                                                <MDBDropdownItem link ><Link>Lịch Sử Mua Hàng</Link> </MDBDropdownItem>
-                                                <MDBDropdownItem link ><button className="btn btn-primary btn-rounded " onClick={handlenBtnLogout}>Đăng Xuất</button> </MDBDropdownItem>
+                                                <MDBDropdownItem link ><Link to={'/account/payments'} >Lịch Sử Mua Hàng</Link> </MDBDropdownItem>
+                                                <MDBDropdownItem link ><button className="btn btn-primary btn-rounded " onClick={handleShowModal}>Đăng Xuất</button> </MDBDropdownItem>
                                             </MDBDropdownMenu>
                                         </MDBDropdown>
                                         ):
@@ -85,7 +94,7 @@ function Header() {
                                 <div className="input-group float-center">
                                     <div className="form-outline">
                                         <input type="search" id="form1" className="form-control" value={text} onChange={(e)=>setText(e.target.value)} />
-                                        <label className="form-label" htmlFor="form1"  >Search</label>
+                                        <label className="form-label" htmlFor="form1"  >Tìm Kiếm</label>
                                     </div>
                                     <button type="button" onClick={handlenBtnSubmit} className="btn btn-primary shadow-0">
                                         <i className="fas fa-search" />
@@ -96,6 +105,22 @@ function Header() {
                         </div>
                     </div>
                 </div>
+                <Modal show={showModal} onHide={handleCloseModal} centered>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Đăng xuất tài khoản </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <h6> Bạn có chắc chắn muốn đăng xuất tài khoản của mình  </h6>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleCloseModal}>
+                                        Hủy
+                                    </Button>
+                                    <Button variant="danger" onClick={handlenBtnLogout}>
+                                        Đồng ý 
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                 {/* Jumbotron */}
                 {/* Navbar */}
                 <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#f5f5f5' }}>
@@ -110,22 +135,23 @@ function Header() {
                             {/* Left links */}
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li className="nav-item">
-                                    <Link className="nav-link text-dark" aria-current="page" to={"/"} >Trang Chủ</Link>
+                                    <Link className="nav-link text-dark" aria-current="page" to={"/"} >GIỚI THIỆU</Link>
                                 </li>
                                 <li className="nav-item item-header">
-                                    <Link className="nav-link text-dark" to={"/category"} >Danh Mục</Link>
+                                    <Link className="nav-link text-dark" to={"/showProduct/bestSeller"} >SẢN PHẨM</Link>
                                 </li>
                                 <li className="nav-item item-header">
-                                    <Link className="nav-link text-dark" to={"/ListBlog"} >Bài Viết</Link>
+                                    <Link className="nav-link text-dark" to={"/category"} >CATELOGUES</Link>
                                 </li>
                                 <li className="nav-item item-header">
-                                    <Link className="nav-link text-dark" to={"/code"} >Mã Giảm Giá</Link>
+                                    <Link className="nav-link text-dark" to={"/ListBlog"} >TIN TỨC</Link>
                                 </li>
+                           
                                 <li className="nav-item item-header">
-                                    <Link className="nav-link text-dark" to={"/contact"}> Hỗ trợ khách hàng </Link>
+                                    <Link className="nav-link text-dark" to={"/contact"}> SHOWROOM </Link>
                                 </li>
                                 <li className="nav-item item-header" item-header>
-                                    <Link className="nav-link text-dark" to={"/introduce"}>Về Chúng Tôi </Link>
+                                    <Link className="nav-link text-dark" to={"/introduce"}>HỆ THỐNG PHÂN PHỐI</Link>
                                 </li>
                             </ul>
                             {/* Left links */}

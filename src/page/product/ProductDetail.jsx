@@ -42,6 +42,10 @@ function ProductDetail() {
     }, [ProductData, text])
 
     const hanldenBtnAddFavorites = async (productId) => {
+        if(!isAuthenticated){
+            toast.error("Hãy đăng nhập trước khi sử dụng tính năng này")
+            return;
+          }
         const objPush = {
             productId: productId,
             email: auth.email
@@ -98,7 +102,10 @@ function ProductDetail() {
         setNums(nums - 1)
     }
     const handlenBtnPush = () => {
-        console.log(ProductData?.nums)
+        if(!isAuthenticated){
+            toast.error("Hãy đăng nhập trước khi sử dụng tính năng này")
+            return;
+          }
         if (nums > ProductData?.nums - 1) {
             toast.error("Sản phẩm này không có đủ số lượng bạn mua !! vui lòng điều chỉnh số lượng !!")
             return;
@@ -107,6 +114,10 @@ function ProductDetail() {
     }
 
     const handlenBtnAddCart = async (id) => {
+        if(!isAuthenticated){
+            toast.error("Hãy đăng nhập trước khi sử dụng tính năng này")
+            return;
+          }
         const ObjAddCard = {
             email: auth.email,
             productId: id,

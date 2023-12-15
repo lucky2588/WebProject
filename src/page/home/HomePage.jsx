@@ -56,7 +56,7 @@ function HomePage() {
       }
     };
     try {
-      const response1 = await axios.post(`http://localhost:8888/api/v1/user/addProductToOrder`, ObjAddCard,config);
+      const response1 = await axios.post(`http://localhost:8888/api/v1/order/addProductToOrder`, ObjAddCard,config);
       toast.success("Đã thêm Sản phẩm vào giỏ hàng  ! ")
     } catch (err) {
       toast.error("Số lượng sản phẩm tại Cửa hàng không đủ")
@@ -110,7 +110,7 @@ function HomePage() {
             <div className="row">
               <div className="col-lg-3 col-md-10 mb-5">
                 <div className="bg-image hover-zoom ripple shadow-1-strong rounded">
-                  <img src="https://1000logos.net/wp-content/uploads/2020/09/Corsair-Logo-1994.jpg" className="w-100 img-title" />
+                  <img src="https://www.tapchikientruc.com.vn/wp-content/uploads/2023/08/23A08096-01.jpg" className="w-100 img-title" />
                   <a href="#!">
                     <div className="mask" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
 
@@ -123,7 +123,7 @@ function HomePage() {
               </div>
               <div className="col-lg-3 col-md-10 mb-5">
                 <div className="bg-image hover-zoom ripple shadow-1-strong rounded">
-                  <img src="https://cdn.mos.cms.futurecdn.net/kYaFd35YPJxCk5hpqZ3924.jpg" className="w-100 img-title" />
+                  <img src="https://kienviet.net/wp-content/uploads/2021/03/Kh%C3%B4ng-gian-tr%C6%B0ng-b%C3%A0y-v%C3%A0-tr%E1%BA%A3i-nghi%E1%BB%87m-h%C6%A1n-1000-s%E1%BA%A3n-ph%E1%BA%A9m-%C4%91%E1%BA%BFn-t%E1%BB%AB-TOTO.jpg" className="w-100 img-title" />
                   <a href="#!">
                     <div className="mask" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
 
@@ -136,7 +136,7 @@ function HomePage() {
               </div>
               <div className="col-lg-3 col-md-10 mb-5">
                 <div className="bg-image hover-zoom ripple shadow-1-strong rounded">
-                  <img src="https://steamuserimages-a.akamaihd.net/ugc/906779874159274506/5031688EA5EEBAFA252A1F44F772710D275A5A9E/?imw=1024&imh=640&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" className="w-100 img-title" />
+                  <img src="https://khoinguyen.net.vn/wp-content/uploads/2022/07/toto-2.jpg" className="w-100 img-title" />
                   <a href="#!">
                     <div className="mask" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
 
@@ -149,7 +149,7 @@ function HomePage() {
               </div>
               <div className="col-lg-3 col-md-10 mb-5">
                 <div className="bg-image hover-zoom ripple shadow-1-strong rounded">
-                  <img src="https://img.ws.mms.shopee.vn/97c06c230a3f4c81ff5d379d27c9ddf8" className="w-100 img-title" />
+                  <img src="https://static.kinhtedothi.vn/images/upload//2023/08/23/toto.jpg" className="w-100 img-title" />
                   <a href="#!">
                     <div className="mask" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
 
